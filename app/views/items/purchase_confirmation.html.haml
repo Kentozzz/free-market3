@@ -1,0 +1,62 @@
+.block.horizontal-padding-25
+  .block__menu
+    購入内容の確認
+.block.horizontal-padding-25
+  .block__main
+    .item-purchase-confirmation
+      .item-purchase-confirmation__image-and-name
+        // -----商品画像-----
+        = image_tag @item.images.first.src.url
+        .item-purchase-confirmation__image-and-name--name
+          // -----商品名-----
+          = @item.name
+      .item-purchase-confirmation__price
+        .item-purchase-confirmation__price--yen
+          // -----価格-----
+          ¥#{@item.price}
+        .item-purchase-confirmation__price--fee
+          \(税込み)
+    .button.back-gray
+      ポイントはありません
+    #amount
+      #amount__left
+        支払金額
+      #amount__right
+        // -----支払金額-----
+        ¥#{@item.price}
+    - unless @card
+      .font-red
+        配送先と支払い方法の入力を完了してください。
+    = link_to purchase_item_path(@item), method: :post do
+      .button{class: "#{'back-red' if @card}" }
+        購入する
+.block.horizontal-padding-25
+  .block__menu-left
+    配送先
+  .block__main
+    〒#{current_user.address&.postal_code}
+    %br
+    #{current_user.address&.city} #{current_user.address&.house_number}
+    %br
+    #{current_user.last_name} #{current_user.first_name}
+  .block__menu-right
+    = link_to "" do
+      変更する >
+.block.horizontal-padding-25
+  .block__menu-left
+    支払い方法
+  .block__main
+    #card-data
+      - if @card
+        = "************" + @card[:last4]
+        %br
+        = @card[:exp_month]
+        \/
+        = @card[:exp_year]
+        %br
+        = @card[:brand]
+      - else
+        \/
+  .block__menu-right
+    = link_to cards_path, data: {turbolinks: false} do
+      変更する >

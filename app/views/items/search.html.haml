@@ -1,0 +1,64 @@
+.search-view.horizontal-padding-15
+  -# ransack導入時に専用フォームヘルパーに置き換える
+  = form_with do |f|
+    = f.select(:hoge, [], {include_blank: "並び替え"}, class: "search-form__input")
+    .search-form
+      .search-form__title
+        詳細検索
+      /// 商品名
+      = icon "fas", "plus"
+      = f.label :hoge, "キーワードを追加する", {class: "search-form__label"}
+      = f.search_field :hoge, placeholder: "例）値下げ", class: "search-form__input"
+      /// カテゴリー
+      = icon "fas", "list"
+      = f.label :hoge, 'カテゴリーを選択する',{class: "search-form__label"}
+      .search-form__categories
+        = f.collection_select(:hoge, [], :hoge , :hoge, {include_blank: "すべて"}, {class: "select-category", id: "item_parent_category_id"})
+        /// 親カテゴリーが選択されていたら子カテゴリーを追加する
+        - if true
+          = f.collection_select(:hoge, [], :hoge , :hoge, {include_blank: "すべて"}, {class: "select-category search-form-added"})
+        /// 子カテゴリーが選択されていたら孫カテゴリーを追加する
+        - if true
+          .select-category.search-form-added
+            .search-checkboxes.search-form-added
+              = f.collection_check_boxes(:hoge, [], :hoge , :hoge, {}, {class: "select-category search-form-added"})
+      /// 価格
+      = icon "fas", "yen-sign"
+      = f.label :hoge, '価格', {class: "search-form__label"}
+      = f.select :hoge, [], include_blank: '指定なし'
+      .search-form__price-range
+        = f.text_field :hoge, placeholder: "¥ Min"
+        〜
+        = f.text_field :hoge, placeholder: "¥ Max"
+      /// 状態
+      = icon "fas", "star"
+      = f.label :hoge, '状態', {class: "search-form__label"}
+      .search-checkboxes
+        = f.collection_check_boxes :hoge, [], :hoge, :hoge
+      /// 送料の負担者
+      = icon "fas", "truck"
+      = f.label :hoge, '送料負担', {class: "search-form__label"}
+      .search-checkboxes
+        = f.collection_check_boxes :hoge, [], :hoge, :hoge
+      /// 販売状況
+      = icon "fas", "shopping-cart"
+      = f.label :hoge, '販売状況', {class: "search-form__label"}
+      .search-checkboxes
+        = f.collection_check_boxes :hoge, [], :hoge, :hoge
+      /// 送信
+      .search-form__buttons
+        .search-form__buttons--clear.button.back-gray
+          クリア
+        = f.submit "完了", class:"search-form__buttons--submit button back-red"
+  .search-results
+    -# 検索結果があれば
+    - if false
+      = render partial: "items/item", collection: @items, as: :item
+      #pagenation
+        = paginate(@items)
+    - else
+      .result-none
+        .result-none__title
+          検索結果
+        .result-none__text
+          該当する商品が見つかりません。検索条件を変えて、再度お試しください。

@@ -1,0 +1,43 @@
+%header.header.horizontal-padding-15
+  .header-top
+    = link_to root_path do
+      = image_tag 'logo.svg', class: "header-top__logo"
+    = form_with url: "", method: :get, local: true  do |f|
+      = f.search_field :name, name: "name_search", placeholder: "何かお探しですか?", class: "header-top__search"
+      = f.hidden_field :name, name: "q[:hoge]"
+      = button_tag type: 'submit', class:"header-top__loupe" do
+        = icon "fas", "search"
+  .header-bottom
+    .header-bottom-left
+      .header-bottom-left__button
+        = link_to categories_path do
+          = icon "fas", "list", class:"header-bottom-left__button--red"
+          カテゴリーから探す
+      .header-bottom-left__button
+        = link_to "" do
+          = icon "fas", "tags", class:"header-bottom-left__button--red"
+          ブランドから探す
+    .header-bottom-right
+      -# ログイン済みだったら
+      - if user_signed_in?
+        .header-bottom-right__button
+          = link_to "" do
+            = icon "fas", "heart", class:"header-bottom-right__button--gray"
+            いいね!一覧
+        .header-bottom-right__button
+          = link_to "" do
+            = icon "fas", "bell", class:"header-bottom-right__button--gray"
+            お知らせ
+        .header-bottom-right__button
+          = link_to "" do
+            = icon "fas", "check", class:"header-bottom-right__button--gray"
+            やることリスト
+        .header-bottom-right__button
+          = link_to user_path(current_user) do
+            = image_tag 'user_noimage.png', class:"header-bottom-right__mypage"
+            マイページ
+      - else
+        = link_to users_select_path,  data: {turbolinks: :false} do  ## ここを変更
+          新規会員登録
+        = link_to new_user_session_path, data: {turbolinks: :false}  do
+          ログイン
